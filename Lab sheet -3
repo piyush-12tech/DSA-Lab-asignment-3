@@ -1,0 +1,93 @@
+# DSA-Lab-asignment-3
+Data Structures Lab Assignments and C++ Programs
+1. single Linked list (SLL)
+#include <iostream>
+using namespace std;
+
+struct Node {
+    int data;
+    Node* next;
+};
+
+Node* head = NULL;
+
+void insert(int x, int pos) {
+    Node* n = new Node{x, NULL};
+    if (pos == 0) {
+        n->next = head;
+        head = n;
+        return;
+    }
+    Node* t = head;
+    for (int i = 0; t && i < pos-1; i++) t = t->next;
+    if (!t) { delete n; cout << "Invalid index\n"; return; }
+    n->next = t->next;
+    t->next = n;
+}
+
+void deleteKey(int x) {
+    Node *t = head, *p = NULL;
+    while (t && t->data != x) p = t, t = t->next;
+    if (!t) return;
+    if (p) p->next = t->next;
+    else head = t->next;
+    delete t;
+}
+
+void display() {
+    for (Node* t = head; t; t = t->next)
+        cout << t->data << " -> ";
+    cout << "NULL\n";
+}
+
+int main() {
+    insert(10,0);
+    insert(20,1);
+    insert(5,0);
+    display();
+    deleteKey(10);
+    display();
+}
+Double linked list (DLL)
+#include <iostream>
+using namespace std;
+
+struct Node {
+    int data;
+    Node *prev, *next;
+};
+
+Node *head = NULL, *tail = NULL;
+
+void insert(int x) {
+    Node* n = new Node{x, tail, NULL};
+    if (tail) tail->next = n;
+    else head = n;
+    tail = n;
+}
+
+void deleteKey(int x) {
+    Node* t = head;
+    while (t && t->data != x) t = t->next;
+    if (!t) return;
+    if (t->prev) t->prev->next = t->next;
+    else head = t->next;
+    if (t->next) t->next->prev = t->prev;
+    else tail = t->prev;
+    delete t;
+}
+
+void reverseDisplay() {
+    for (Node* t = tail; t; t = t->prev)
+        cout << t->data << " ";
+    cout << endl;
+}
+
+int main() {
+    insert(10);
+    insert(20);
+    insert(30);
+    reverseDisplay();
+    deleteKey(20);
+    reverseDisplay();
+}
